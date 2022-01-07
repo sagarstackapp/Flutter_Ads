@@ -17,7 +17,9 @@ class GoogleAdsScreen extends StatefulWidget {
 
 class GoogleAdsScreenState extends State<GoogleAdsScreen> {
   InterstitialAd? interstitialAd;
+  RewardedAd? rewardedAd;
   int numInterstitialLoadAttempts = 0;
+  int numRewardedAdLoadAttempts = 0;
   int maxFailedLoadAttempts = 3;
 
   final BannerAd bannerAd = BannerAd(
@@ -40,6 +42,7 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
   void initState() {
     bannerAd.load();
     createIntersitialAd();
+    createRewardedAd();
     super.initState();
   }
 
@@ -55,7 +58,7 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
         appBar: AppBar(
           title: const Text(
             StringResources.googleTitle,
-            style: TextStyle(color: ColorResources.lightBlue),
+            style: TextStyle(color: ColorResources.white),
           ),
         ),
         body: Stack(
@@ -64,16 +67,24 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
               imageName: ImageResources.backgroundImage,
               width: double.infinity,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: AdWidget(ad: bannerAd..load())),
-                CommonElevatedButton(
-                  text: 'Show interstitial Ad',
-                  onPressed: showInterstitialAd,
-                ),
-                const Spacer(),
-              ],
+            SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: AdWidget(ad: bannerAd..load())),
+                  const Spacer(),
+                  CommonElevatedButton(
+                    text: 'Show interstitial Ad',
+                    onPressed: showInterstitialAd,
+                  ),
+                  const SizedBox(height: 50),
+                  CommonElevatedButton(
+                    text: 'Show Rewarded Ad',
+                    onPressed: showRewardedAd,
+                  ),
+                  const Spacer(),
+                ],
+              ),
             ),
           ],
         ),
@@ -83,24 +94,25 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
 
   void createIntersitialAd() {
     InterstitialAd.load(
-        adUnitId: 'ca-app-pub-3940256099942544/1033173712',
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            log('$ad InterstitialAd loaded');
-            interstitialAd = ad;
-            numInterstitialLoadAttempts = 0;
-            interstitialAd!.setImmersiveMode(true);
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            log('InterstitialAd failed to load: $error.');
-            numInterstitialLoadAttempts += 1;
-            interstitialAd = null;
-            if (numInterstitialLoadAttempts <= maxFailedLoadAttempts) {
-              createIntersitialAd();
-            }
-          },
-        ));
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          log('$ad InterstitialAd loaded');
+          interstitialAd = ad;
+          numInterstitialLoadAttempts = 0;
+          interstitialAd!.setImmersiveMode(true);
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          log('InterstitialAd failed to load: $error.');
+          numInterstitialLoadAttempts += 1;
+          interstitialAd = null;
+          if (numInterstitialLoadAttempts <= maxFailedLoadAttempts) {
+            createIntersitialAd();
+          }
+        },
+      ),
+    );
   }
 
   void showInterstitialAd() {
@@ -124,5 +136,55 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
     );
     interstitialAd!.show();
     interstitialAd = null;
+  }
+
+  void createRewardedAd() {
+    RewardedAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (RewardedAd ad) {
+          log('$ad RewardedAd loaded');
+          rewardedAd = ad;
+          numRewardedAdLoadAttempts = 0;
+          interstitialAd!.setImmersiveMode(true);
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          log('RewardedAd failed to load: $error.');
+          numRewardedAdLoadAttempts += 1;
+          rewardedAd = null;
+          if (numRewardedAdLoadAttempts <= maxFailedLoadAttempts) {
+            createIntersitialAd();
+          }
+        },
+      ),
+    );
+  }
+
+  void showRewardedAd() {
+    if (rewardedAd == null) {
+      log('Warning: attempt to show rewarded before loaded.');
+      return;
+    }
+    rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (RewardedAd ad) =>
+          log('ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (RewardedAd ad) {
+        log('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+        createRewardedAd();
+      },
+      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+        log('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+        createRewardedAd();
+      },
+    );
+    rewardedAd!.setImmersiveMode(true);
+    rewardedAd!.show(
+      onUserEarnedReward: (ad, reward) =>
+          log('Reward data --> $ad : ${reward.amount} ${reward.type}'),
+    );
+    rewardedAd = null;
   }
 }
