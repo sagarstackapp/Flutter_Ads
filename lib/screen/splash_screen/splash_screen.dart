@@ -6,6 +6,7 @@ import 'package:flutter_ads/common/constant/image_res.dart';
 import 'package:flutter_ads/common/constant/string_res.dart';
 import 'package:flutter_ads/common/widget/common_elevated_button.dart';
 import 'package:flutter_ads/common/widget/common_image_asset.dart';
+import 'package:flutter_ads/screen/facebook_ads_screen/facebook_ads_screen.dart';
 import 'package:flutter_ads/screen/google_ads_screen/google_ads_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -84,8 +85,7 @@ class SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (val >= 0)
-                    CommonElevatedButton(onPressed: val == 0 ? goToAds : null),
+                  if (val >= 0) CommonElevatedButton(onPressed: goToAds),
                 ],
               ),
             ),
@@ -100,6 +100,12 @@ class SplashScreenState extends State<SplashScreen> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const GoogleAdsScreen()),
+        (route) => false,
+      );
+    } else if (val == 1) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const FacebookAdsScreen()),
         (route) => false,
       );
     }
