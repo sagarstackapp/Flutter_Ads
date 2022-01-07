@@ -34,6 +34,9 @@ dependencies:
   # Google Ads :
   google_mobile_ads: ^1.0.1
 
+  # Facebook Ads :
+  facebook_audience_network: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
