@@ -31,6 +31,9 @@ dependencies:
   # Image View
   flutter_svg: ^1.0.0
 
+  # Google Ads :
+  google_mobile_ads: ^1.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

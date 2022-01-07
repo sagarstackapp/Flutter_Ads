@@ -18,7 +18,7 @@ class SplashScreen extends StatefulWidget {
 class SplashScreenState extends State<SplashScreen> {
   int val = -1;
 
-  List<dynamic> adsType = ['Google', 'Facebook', 'Unity', 'Mopub'];
+  List<String> adsType = ['Google', 'Facebook', 'Unity', 'Mopub'];
 
   @override
   Widget build(BuildContext context) {
