@@ -34,7 +34,7 @@ class FacebookAdsScreenState extends State<FacebookAdsScreen> {
     log('Current screen --> $runtimeType');
     return WillPopScope(
       onWillPop: () async {
-        return true;
+        return false;
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,

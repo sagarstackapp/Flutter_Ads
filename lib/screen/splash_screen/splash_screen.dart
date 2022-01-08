@@ -8,6 +8,7 @@ import 'package:flutter_ads/common/widget/common_elevated_button.dart';
 import 'package:flutter_ads/common/widget/common_image_asset.dart';
 import 'package:flutter_ads/screen/facebook_ads_screen/facebook_ads_screen.dart';
 import 'package:flutter_ads/screen/google_ads_screen/google_ads_screen.dart';
+import 'package:flutter_ads/screen/unity_ads_screen/unity_ads_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -107,6 +108,12 @@ class SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(builder: (context) => const FacebookAdsScreen()),
         (route) => false,
+      );
+    } else if (val == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const UnityAdsScreen()),
+        // (route) => false,
       );
     }
   }

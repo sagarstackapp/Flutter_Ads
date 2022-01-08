@@ -37,6 +37,9 @@ dependencies:
   # Facebook Ads :
   facebook_audience_network: ^1.0.1
 
+  # Unity Ads :
+  unity_ads_plugin: ^0.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
