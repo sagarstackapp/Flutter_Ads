@@ -5,7 +5,7 @@ import 'package:flutter_ads/common/constant/color_res.dart';
 import 'package:flutter_ads/common/constant/image_res.dart';
 import 'package:flutter_ads/common/constant/string_res.dart';
 import 'package:flutter_ads/common/widget/common_image_asset.dart';
-import 'package:unity_ads_plugin/unity_ads.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 class UnityAdsScreen extends StatefulWidget {
   const UnityAdsScreen({Key? key}) : super(key: key);
@@ -20,7 +20,9 @@ class UnityAdsScreenState extends State<UnityAdsScreen> {
     UnityAds.init(
       gameId: '3315378',
       testMode: false,
-      listener: (state, args) => log('Init Listener: $state => $args'),
+      onComplete: () => log('Initialization Complete'),
+      onFailed: (error, errorMessage) =>
+          log('Error is : ${error.name} & Message : $errorMessage'),
     );
     super.initState();
   }
@@ -50,11 +52,13 @@ class UnityAdsScreenState extends State<UnityAdsScreen> {
               child: Column(
                 children: [
                   UnityBannerAd(
-                    placementId: "banner_placement_id",
-                    listener: (state, args) {
-                      log('Banner Listener: $state => $args');
-                    },
-                  )
+                    placementId: 'testing',
+                    onLoad: (placementId) => log('Banner loaded: $placementId'),
+                    onClick: (placementId) =>
+                        log('Banner clicked: $placementId'),
+                    onFailed: (placementId, error, message) =>
+                        log('Banner Ad $placementId failed: $error $message'),
+                  ),
                 ],
               ),
             ),

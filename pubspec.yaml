@@ -29,7 +29,7 @@ dependencies:
   cupertino_icons: ^1.0.4
 
   # Image View
-  flutter_svg: ^1.0.0
+  flutter_svg: ^1.0.1
 
   # Google Ads :
   google_mobile_ads: ^1.0.1
@@ -38,7 +38,7 @@ dependencies:
   facebook_audience_network: ^1.0.1
 
   # Unity Ads :
-  unity_ads_plugin: ^0.2.4
+  unity_ads_plugin: ^0.3.0
 
 dev_dependencies:
   flutter_test:

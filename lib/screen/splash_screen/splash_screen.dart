@@ -110,10 +110,10 @@ class SplashScreenState extends State<SplashScreen> {
         (route) => false,
       );
     } else if (val == 2) {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const UnityAdsScreen()),
-        // (route) => false,
+        (route) => false,
       );
     }
   }
