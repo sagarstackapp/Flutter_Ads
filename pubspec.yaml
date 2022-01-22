@@ -40,6 +40,7 @@ dependencies:
   # Unity Ads :
   unity_ads_plugin: ^0.3.0
   firebase_core: ^1.11.0
+  onesignal_flutter: ^3.2.7
 
 dev_dependencies:
   flutter_test:
