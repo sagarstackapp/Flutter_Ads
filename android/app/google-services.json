@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "536508472452",
+    "project_id": "onesignalpushnotificatio-6f34c",
+    "storage_bucket": "onesignalpushnotificatio-6f34c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536508472452:android:8157d9db1f68fe10e4f6d1",
+        "android_client_info": {
+          "package_name": "com.example.demo_ads"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536508472452-5qtr8n69hkoo0vqr39t23tgohig28kir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmjJO8Muft6FNsLkePT50NwoqrPFILi2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536508472452-5qtr8n69hkoo0vqr39t23tgohig28kir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

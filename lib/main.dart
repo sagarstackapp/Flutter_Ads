@@ -1,10 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ads/common/constant/color_res.dart';
 import 'package:flutter_ads/screen/splash_screen/splash_screen.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   MobileAds.instance.initialize();
   RequestConfiguration configuration = RequestConfiguration(testDeviceIds: [
     'BB87F960EF0F1760DCD2535EA14A3529',
