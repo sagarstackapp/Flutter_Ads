@@ -1,4 +1,4 @@
-package com.example.flutter_ads
+package com.example.demo_ads
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine

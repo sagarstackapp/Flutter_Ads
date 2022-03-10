@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ads/common/constant/color_res.dart';
@@ -16,6 +17,7 @@ class GoogleAdsScreen extends StatefulWidget {
 }
 
 class GoogleAdsScreenState extends State<GoogleAdsScreen> {
+  NativeAd? nativeAd;
   InterstitialAd? interstitialAd;
   RewardedAd? rewardedAd;
   int numInterstitialLoadAttempts = 0;
@@ -23,7 +25,7 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
   int maxFailedLoadAttempts = 3;
 
   final BannerAd bannerAd = BannerAd(
-    size: AdSize.largeBanner,
+    size: AdSize.banner,
     adUnitId: 'ca-app-pub-3940256099942544/6300978111',
     listener: BannerAdListener(
       onAdLoaded: (Ad ad) => log('Ad loaded.'),
@@ -41,6 +43,7 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
   @override
   void initState() {
     bannerAd.load();
+    createNativeAd();
     createIntersitialAd();
     createRewardedAd();
     super.initState();
@@ -49,45 +52,49 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
   @override
   Widget build(BuildContext context) {
     log('Current screen --> $runtimeType');
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: const Text(
-            StringResources.googleTitle,
-            style: TextStyle(color: ColorResources.white),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text(
+          StringResources.googleTitle,
+          style: TextStyle(color: ColorResources.white),
+        ),
+      ),
+      body: Stack(
+        children: [
+          const CommonImageAsset(
+            imageName: ImageResources.backgroundImage,
+            width: double.infinity,
           ),
-        ),
-        body: Stack(
-          children: [
-            const CommonImageAsset(
-              imageName: ImageResources.backgroundImage,
-              width: double.infinity,
+          SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: AdWidget(ad: nativeAd!),
+                ),
+                const Spacer(),
+                CommonElevatedButton(
+                  text: 'Show interstitial Ad',
+                  onPressed: showInterstitialAd,
+                ),
+                const SizedBox(height: 50),
+                CommonElevatedButton(
+                  text: 'Show Rewarded Ad',
+                  onPressed: showRewardedAd,
+                ),
+                const Spacer(),
+              ],
             ),
-            SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: AdWidget(ad: bannerAd..load())),
-                  const Spacer(),
-                  CommonElevatedButton(
-                    text: 'Show interstitial Ad',
-                    onPressed: showInterstitialAd,
-                  ),
-                  const SizedBox(height: 50),
-                  CommonElevatedButton(
-                    text: 'Show Rewarded Ad',
-                    onPressed: showRewardedAd,
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        alignment: Alignment.bottomCenter,
+        width: bannerAd.size.width.toDouble(),
+        height: bannerAd.size.height.toDouble(),
+        child: AdWidget(ad: bannerAd..load()),
       ),
     );
   }
@@ -186,5 +193,29 @@ class GoogleAdsScreenState extends State<GoogleAdsScreen> {
           log('Reward data --> $ad : ${reward.amount} ${reward.type}'),
     );
     rewardedAd = null;
+  }
+
+  void createNativeAd() {
+    nativeAd = NativeAd(
+      adUnitId: Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/2247696110'
+          : 'ca-app-pub-3940256099942544/2247696110',
+      factoryId: 'listTile',
+      listener: NativeAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            // _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          // Releases an ad resource when it fails to load
+          ad.dispose();
+
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+      ),
+      request: const AdRequest(),
+    );
+    nativeAd!.load();
   }
 }

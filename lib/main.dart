@@ -19,6 +19,7 @@ void main() async {
   RequestConfiguration configuration = RequestConfiguration(testDeviceIds: [
     'BB87F960EF0F1760DCD2535EA14A3529',
     '7643488A8BA045386F49B7031955A309',
+    'A244A464DD4A8F5B270B150A9FB7BC05'
   ]);
   MobileAds.instance.updateRequestConfiguration(configuration);
   runApp(const MyApp());

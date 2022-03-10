@@ -2,6 +2,8 @@ import UIKit
 import Flutter
 import Firebase
 
+import google_mobile_ads
+
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
@@ -10,6 +12,9 @@ import Firebase
   ) -> Bool {
     FirebaseApp.configure()
     GeneratedPluginRegistrant.register(with: self)
+      let listTileFactory = ListTileNativeAdFactory()
+          FLTGoogleMobileAdsPlugin.registerNativeAdFactory(
+              self, factoryId: "listTile", nativeAdFactory: listTileFactory)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

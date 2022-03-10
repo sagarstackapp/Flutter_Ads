@@ -40,6 +40,7 @@ class SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 20),
                   const Text(
                     'Please select ads type :',
                     style: TextStyle(
@@ -49,39 +50,42 @@ class SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ListView.builder(
-                    padding: const EdgeInsets.only(left: 30),
-                    shrinkWrap: true,
-                    itemCount: adsType.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          val = index;
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Radio(
-                            value: index,
-                            groupValue: val,
-                            activeColor: ColorResources.green,
-                            onChanged: (value) {
-                              setState(() {
-                                val = int.parse(value.toString());
-                              });
-                            },
-                          ),
-                          Text(
-                            adsType[index],
-                            style: TextStyle(
-                              color: val == index
-                                  ? ColorResources.green
-                                  : ColorResources.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(left: 30),
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: adsType.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            val = index;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Radio(
+                              value: index,
+                              groupValue: val,
+                              activeColor: ColorResources.green,
+                              onChanged: (value) {
+                                setState(() {
+                                  val = int.parse(value.toString());
+                                });
+                              },
                             ),
-                          ),
-                        ],
+                            Text(
+                              adsType[index],
+                              style: TextStyle(
+                                color: val == index
+                                    ? ColorResources.green
+                                    : ColorResources.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -98,10 +102,9 @@ class SplashScreenState extends State<SplashScreen> {
 
   void goToAds() {
     if (val == 0) {
-      Navigator.pushAndRemoveUntil(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const GoogleAdsScreen()),
-        (route) => false,
       );
     } else if (val == 1) {
       Navigator.pushAndRemoveUntil(
